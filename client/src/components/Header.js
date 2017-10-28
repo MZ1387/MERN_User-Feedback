@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Payments from './Payments'
+
 class Header extends Component {
   renderContent() {
     switch (this.props.auth) {
@@ -13,7 +15,10 @@ class Header extends Component {
         );
       default:
         return (
-          <li><a href="/api/logout">Logout</a></li>
+          [
+            <li key="1" ><Payments /></li>,
+            <li key="2" ><a href="/api/logout">Logout</a></li>
+          ]
         );
     }
   }

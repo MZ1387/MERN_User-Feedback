@@ -6,7 +6,6 @@ import StripeCheckout from 'react-stripe-checkout';
 
 class Payments extends Component {
   render() {
-    console.log('XXX', this.props);
     return (
       <StripeCheckout
         name="Emaily"

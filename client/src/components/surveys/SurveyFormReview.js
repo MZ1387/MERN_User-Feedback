@@ -1,11 +1,23 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-const SurveyReview = () => {
+const SurveyReview = ({ onCancel, formValues: { title, subject, body, emails } }) => {
   return (
     <div>
-      XXX
+      <button
+        className="yellow darken-3 btn-flat"
+        onClick={onCancel}
+      >
+      Back
+      </button>
     </div>
   );
 }
 
-export default SurveyReview;
+function mapStateToProps(state) {
+  return {
+    formValues: state.form.surveyForm.values
+  }
+}
+
+export default connect(mapStateToProps)(SurveyReview);

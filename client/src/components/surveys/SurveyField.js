@@ -1,19 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class SurveyField extends Component {
-  render() {
-    return (
-      <div>
-        <input />
-      </div>
-    );
-  }
-}
-
-export default SurveyField;
-
-// <Field
-//   type="text"
-//   name="surveyTitle"
-//   component="input"
-// />
+export default ({ input }) => {
+  return (
+    <div>
+      <input {...input} />
+    </div>
+  );
+};

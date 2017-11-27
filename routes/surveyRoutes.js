@@ -17,15 +17,27 @@ module.exports = app => {
   app.post('/api/surveys/webhooks', (req, res) => {
     const p = new Path('/api/surveys/:surveyId/:choice');
 
-    const events = _.map(req.body, ({ email, url }) => {
-      const match = p.test(new URL(url).pathname);
-      if (match) {
-        return { email, surveyId: match.surveyId, choice: match.choice };
-      }
-    });
-
-    const compactEvents = _.compact(events);
-    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
+    _.chain(req.body)
+      .map(({ email, url }) => {
+        const match = p.test(new URL(url).pathname);
+        if (match) {
+          return { email, surveyId: match.surveyId, choice: match.choice };
+        }
+      })
+      .compact()
+      .uniqBy('email', 'surveyId')
+      .each(({ surveyId, email, choice }) => {
+        Survey.updateOne({
+          _id: surveyId,
+          recipients: {
+            $elemMatch: { email: email, responded: false }
+          }
+        }, {
+          $inc: { [choice]: 1 },
+          $set: { 'recipients.$.responded': true }
+        }).exec();
+      })
+      .value();
 
     res.send({});
   })
